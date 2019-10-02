@@ -14,8 +14,8 @@ var isrcRegexp *regexp.Regexp
 // ISRC represents an International Standard Recording Code
 // https://www.dittomusic.com/blog/what-is-an-isrc-code
 type ISRC struct {
-	country     []rune
-	registrant  []rune
+	country     [2]rune
+	registrant  [3]rune
 	year        uint8
 	designation uint32
 }
@@ -37,8 +37,9 @@ func NewISRC(isrcStr string) (*ISRC, error) {
 	if !isrcRegexp.Match([]byte(isrcStr)) {
 		return &i, fmt.Errorf("invalid ISRC string")
 	}
-	i.country = []rune(isrcStr[0:2])
-	i.registrant = []rune(isrcStr[2:5])
+
+	copy(i.country[:], []rune(isrcStr[0:2]))
+	copy(i.registrant[:], []rune(isrcStr[2:5]))
 
 	year, err := strconv.Atoi(isrcStr[5:7])
 	if err != nil {
@@ -57,13 +58,13 @@ func NewISRC(isrcStr string) (*ISRC, error) {
 
 // Country returns the two-letter alphabetic country code as a string.
 func (i *ISRC) Country() string {
-	return string(i.country)
+	return string(i.country[:])
 }
 
 // Registrant returns the three-character alphanumeric registrant code
 // as a string.
 func (i *ISRC) Registrant() string {
-	return string(i.registrant)
+	return string(i.registrant[:])
 }
 
 // Year returns the two-digit year code as an unsigned 8-bit integer.
