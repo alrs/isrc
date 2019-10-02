@@ -35,6 +35,6 @@ func TestBadISRC(t *testing.T) {
 		if err == nil {
 			t.Fatalf("Bad ISRC %s should have errored", testString)
 		}
-		t.Logf("Bad ISRC %s correctly caused an error", testString)
+		t.Logf("Bad ISRC %s correctly caused an error: %v", testString, err)
 	}
 }

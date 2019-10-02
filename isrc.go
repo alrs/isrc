@@ -42,13 +42,14 @@ func NewISRC(isrcStr string) (*ISRC, error) {
 
 	year, err := strconv.Atoi(isrcStr[5:7])
 	if err != nil {
-		return &i, err
+		return &i, fmt.Errorf("error converting release year to integer: %s", err)
 	}
 	i.year = uint8(year)
 
 	designation, err := strconv.Atoi(isrcStr[7:12])
 	if err != nil {
-		return &i, err
+		return &i, fmt.Errorf("error converting designation code to integer: %s",
+			err)
 	}
 	i.designation = uint32(designation)
 	return &i, nil
